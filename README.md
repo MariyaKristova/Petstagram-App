@@ -1,0 +1,1 @@
+The Petstagram project aims to provide an enjoyable environment for pet enthusiasts to connect, share and celebrate their beloved companions.
