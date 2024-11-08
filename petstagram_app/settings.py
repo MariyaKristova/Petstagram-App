@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'petstagram_app.common',
     'petstagram_app.pets',
     'petstagram_app.photos',
-    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -130,12 +129,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
-
-CLOUDINARY = {
-    'cloud_name': 'dmb8ixiow',
-    'api_key': '939484479975593',
-    'api_secret': '<your_api_secret>',  # Replace with your actual API secret
-}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
