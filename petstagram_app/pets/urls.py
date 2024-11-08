@@ -1,5 +1,5 @@
 from django.urls import path, include
-from petstagram.pets.views import EditPetView, DeletePetView, AddPetView, PetDetailsView
+from petstagram_app.pets.views import EditPetView, DeletePetView, AddPetView, PetDetailsView
 
 urlpatterns = [
     path('add/', AddPetView.as_view(), name='add-pet'),
