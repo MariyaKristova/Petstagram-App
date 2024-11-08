@@ -1,5 +1,5 @@
 from django.db import models
-from photos.models import Photo
+from petstagram_app.photos.models import Photo
 
 
 class Comment(models.Model):
