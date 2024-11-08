@@ -1,7 +1,8 @@
-from django.contrib.auth import models as auth_models, get_user_model
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
-class AppUser(auth_models.AbstractUser, auth_models.PermissionsMixin):
+class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=False, blank=False)
 
     is_active = models.BooleanField(default=True)
