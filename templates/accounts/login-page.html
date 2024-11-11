@@ -9,6 +9,7 @@
             <!-- Start Login Form-->
             <form method="post">
                 {% csrf_token %}
+                {{ form.errors }}
                 {{ form.username|placeholder:"Email" }}
                 {{ form.password|placeholder:"Password" }}
 
