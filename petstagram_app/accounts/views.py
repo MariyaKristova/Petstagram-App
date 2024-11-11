@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,6 +11,13 @@ class AppUserRegisterView(CreateView):
     form_class = UserCreationForm
     template_name= 'accounts/register-page.html'
     success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        login(self.request, self.object)
+
+        return response
 
 def login(request):
     return render(request, template_name='accounts/login-page.html')
