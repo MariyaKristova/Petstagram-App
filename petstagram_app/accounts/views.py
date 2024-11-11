@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from petstagram_app.accounts.forms import AppUserCreationForm
+from petstagram_app.accounts.forms import AppUserCreationForm, AppUserLoginForm
 
 UserModel = get_user_model()
 
