@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load placeholder_filter %}
 {% block content %}
 
     <!-- Start Register Section -->
@@ -9,9 +10,9 @@
             <!-- Start Register Form -->
             <form method="post" action="">
                 {% csrf_token %}
-                {{ form.email }}
-                {{ form.password1 }}
-                {{ form.password2 }}
+                {{ form.email|placeholder: "Email" }}
+                {{ form.password1|placeholder: "Password" }}
+                {{ form.password2|placeholder: "Repeat Password" }}
 
                 <!-- Register Button -->
                 <button type="submit">Register</button>
