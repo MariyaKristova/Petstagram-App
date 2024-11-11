@@ -1,7 +1,8 @@
 {% extends 'common/base.html' %}
 {% load placeholder_filter %}
-{% block content %}
 
+
+{% block content %}
     <!-- Start Register Section -->
     <div class="login-register-div">
         <div class="login-register-box">
@@ -10,13 +11,13 @@
             <!-- Start Register Form -->
             <form method="post" action="">
                 {% csrf_token %}
-                {{ form.email|placeholder: "Email" }}
+                {{ form.email|placeholder:"Email" }}
                 {{ form.email.errors }}
-                {{ form.password1|placeholder: "Password" }}
+                {{ form.password1|placeholder:"Password" }}
                 {{ form.password1.errors }}
-                {{ form.password2|placeholder: "Repeat Password" }}
+                {{ form.password2|placeholder:"Repeat Password" }}
                 {{ form.password2.errors }}
-
+                
                 <!-- Register Button -->
                 <button type="submit">Register</button>
             </form>
