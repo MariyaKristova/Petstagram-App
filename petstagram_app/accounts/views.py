@@ -4,11 +4,13 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from petstagram_app.accounts.forms import AppUserCreationForm
+
 UserModel = get_user_model()
 
 class AppUserRegisterView(CreateView):
     model = UserModel
-    form_class = UserCreationForm
+    form_class = AppUserCreationForm
     template_name= 'accounts/register-page.html'
     success_url = reverse_lazy('login')
 
