@@ -1,7 +1,16 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
-def register(request):
-    return render(request, template_name='accounts/register-page.html')
+UserModel = get_user_model()
+
+class AppUserRegisterView(CreateView):
+    model = UserModel
+    form_class = UserCreationForm
+    template_name= 'accounts/register-page.html'
+    success_url = reverse_lazy('login')
 
 def login(request):
     return render(request, template_name='accounts/login-page.html')
