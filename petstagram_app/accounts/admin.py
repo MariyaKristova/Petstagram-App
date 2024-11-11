@@ -20,4 +20,5 @@ class AppUserAdmin(UserAdmin):
                  ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
                  ('Important dates', {'fields': ('last_login',)}),)
 
-    add_fieldsets = ((None, {"classes": ("wide",), "fields": ("email", "password1", "password2"), },),
+    add_fieldsets = ((None, {"classes": ("wide",),
+                             "fields": ("email", "password1", "password2"), }))
