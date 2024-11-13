@@ -18,7 +18,10 @@ class AddPetView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('profile-details', kwargs={'pk': self.request.user.pk})
+        return reverse_lazy(
+            'profile-details',
+            kwargs={'pk': self.request.user.pk}
+        )
 
 
 class PetDetailsView(DetailView):
