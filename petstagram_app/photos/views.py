@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -8,7 +10,7 @@ from petstagram_app.photos.models import Photo
 
 
 # Create your views here.
-class AddPhotoView(CreateView):
+class AddPhotoView(LoginRequiredMixin, CreateView):
     model = Photo
     form_class = PhotoAddForm
     template_name = 'photos/photo-add-page.html'
@@ -20,7 +22,7 @@ class AddPhotoView(CreateView):
         return super().form_valid(form)
 
 
-class PhotoDetailsView(DetailView):
+class PhotoDetailsView(LoginRequiredMixin, DetailView):
     model = Photo
     template_name = 'photos/photo-details-page.html'
 
@@ -32,7 +34,7 @@ class PhotoDetailsView(DetailView):
         return context
 
 
-class EditPhotoView(UpdateView):
+class EditPhotoView(LoginRequiredMixin, UpdateView):
     model = Photo
     form_class = PhotoEditForm
     template_name = 'photos/photo-edit-page.html'
@@ -41,6 +43,7 @@ class EditPhotoView(UpdateView):
         return reverse_lazy('photo-details', kwargs={'pk': self.object.pk})
 
 
+@login_required
 def photo_delete(request, pk: int):
     Photo.objects.get(pk=pk).delete()
     return redirect('home')
