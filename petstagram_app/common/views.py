@@ -31,7 +31,7 @@ class HomePageView(ListView):
 
 def like_functionality(request, photo_id: int):
     photo = Photo.objects.get(id=photo_id)
-    liked_object = Like.objects.filter(to_photo_id=photo_id).first()
+    liked_object = Like.objects.filter(to_photo_id=photo_id, user=request.user).first()
 
     if liked_object:
         liked_object.delete()
