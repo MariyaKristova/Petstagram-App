@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
 from django.db import models
 from petstagram_app.pets.models import Pet
 from petstagram_app.photos.validators import FileSizeValidator
+
+UserModel = get_user_model()
 
 class Photo(models.Model):
     photo = models.ImageField(upload_to='', validators=[FileSizeValidator(5)])
@@ -9,3 +12,4 @@ class Photo(models.Model):
     location = models.CharField(max_length=30, blank=True, null=True)
     tagged_pets = models.ManyToManyField(to=Pet, blank=True)
     date_of_publication = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(to=UserModel, on_delete=models.CASCADE)
