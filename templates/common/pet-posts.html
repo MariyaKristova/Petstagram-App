@@ -31,7 +31,7 @@
                 {% if photo.location %}
                     <span>{{ photo.location}}</span>
                 {% endif %}
-                {% if photo_page %}
+                {% if photo_page and request.user.pk == photo.user.pk %}
                     <div class="edit-delete-btns">
         
                         <!-- Link to Edit Pet Photo Page -->
