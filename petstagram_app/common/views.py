@@ -7,8 +7,6 @@ from petstagram_app.common.forms import CommentForm, SearchForm
 from petstagram_app.common.models import Like
 from petstagram_app.photos.models import Photo
 
-
-# Create your views here.
 class HomePageView(ListView):
     model = Photo
     template_name = 'common/home-page.html'
@@ -38,7 +36,7 @@ def like_functionality(request, photo_id: int):
     if liked_object:
         liked_object.delete()
     else:
-        like = Like(to_photo=photo)
+        like = Like(to_photo=photo, user=request.user)
         like.save()
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
@@ -55,6 +53,7 @@ def comment_functionality(request, photo_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.to_photo = photo
+            comment.user = request.user
             comment.save()
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
