@@ -60,9 +60,6 @@
 
             <!-- User Email Address -->
             <p class="email">{{ object.email }}</p>
-
-            <!-- User Gender IF Added -->
-            <p class="gender">Male</p>
           </div>
         </div>
         <!-- End Profile Personal Data Section -->
@@ -71,7 +68,7 @@
         <div class="pets">
           <div class="statuses">
             {% for pet in object.pet_set.all %}
-              <a href="{% url 'pet-details' object.profile.get_full_name pet.slug %}">
+              <a href="{% url 'pet-details' object.profile.get_full_name|lower pet.slug %}">
               <div class="head-pet">
                 <div class="status">
                   <div class="image">
@@ -94,6 +91,7 @@
         <!-- Start Last Uploaded Photos Section -->
         <div class="pet-photos">
           <!-- Link to Last Uploaded Pet Photo -->
+            {% if object.photo_set.all %}
             {% for photo in object.photo_set.all %}
                 <a href="{% url 'profile-details' photo.pk %}">
                 <!-- Pet Photo -->
@@ -102,15 +100,15 @@
                   alt="pet img"
                 />
                 </a>
-            
+            {% endfor %}
             <!-- IF NO Posts Show No Post Image -->
-            {% empty %}
+            {% else %}
                 <img
                   class="no-posts"
                   src="{% static '/images/no_posts.png'%}"
                   alt="no posts"
                 />
-            {% endfor %}
+            {% endif %}
         </div>
       </div>
       <!-- End Profile Details Section -->

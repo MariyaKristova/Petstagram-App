@@ -22,7 +22,7 @@
                 <!-- Link to User Profile Page -->
                 <a href="{% url 'profile-details' photo.user.pk %}">
                     <!-- if user has first name and last name -->
-                    {{ photo.user.get_profile_name }}
+                    {{ photo.user.get_full_name }}
                     <!-- else -->
                     <!-- show user username -->
                 </a>
@@ -92,7 +92,7 @@
 
         <!-- Start Tagged Pets -->
         {% for pet in photo.tagged_pets.all %}
-            <a href="{% url 'pet-details' pet.user.profile.get_profile_name|lower pet.slug %}">
+            <a href="{% url 'pet-details' pet.user.profile.get_full_name|lower pet.slug %}">
                 <p class="message">
                     <b>{{ pet.name }}</b>
                 </p>

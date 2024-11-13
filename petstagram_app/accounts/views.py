@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Count
 from django.shortcuts import render
@@ -38,16 +39,18 @@ class ProfileEditView(UpdateView):
         )
 
 
-class ProfileDetailView(DetailView):
-    model = Profile
-    template_name='accounts/profile-details-page.html'
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = UserModel
+    template_name = 'accounts/profile-details-page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        photos_with_likes = self.object.photo_set.annotate(likes=Count('like'))
-        context['total_likes_count'] = sum(p.likes for p in photos_with_likes)
+
+        photos_with_likes = self.object.photo_set.annotate(likes_count=Count('like'))
+        context['total_likes_count'] = sum(photo.likes_count for photo in photos_with_likes)
         context['total_pets_count'] = self.object.pet_set.count()
         context['total_photos_count'] = self.object.photo_set.count()
+
         return context
 
 def delete_profile(request, pk: int):
