@@ -27,7 +27,7 @@ class AppUserRegisterView(CreateView):
 
         return response
 
-class ProfileEditView(UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name='accounts/profile-edit-page.html'
