@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model, login
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
 
 from petstagram_app.accounts.forms import AppUserCreationForm, ProfileEditForm
 from petstagram_app.accounts.models import Profile
@@ -37,9 +37,14 @@ class ProfileEditView(UpdateView):
         )
 
 
-def show_profile_details(request, pk: int):
-    return render(request, template_name='accounts/profile-details-page.html')
+class AppUserDetailsView(DetailView):
+    model = Profile
+    template_name='accounts/profile-details-page.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_likes_count'] = sum(p.like_set_count() for p in self.object.photo_set.all())
+        return context
 
 def delete_profile(request, pk: int):
     return render(request, template_name='accounts/profile-delete-page.html')
