@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, resolve_url
 from django.views.generic import ListView
@@ -28,7 +29,7 @@ class HomePageView(ListView):
 
         return queryset
 
-
+@login_required
 def like_functionality(request, photo_id: int):
     photo = Photo.objects.get(id=photo_id)
     liked_object = Like.objects.filter(to_photo_id=photo_id, user=request.user).first()
@@ -46,6 +47,7 @@ def share_functionality(request, photo_id: int):
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
 
+@login_required
 def comment_functionality(request, photo_id):
     if request.POST:
         photo = Photo.objects.get(id=photo_id)
