@@ -17,7 +17,6 @@ class AddPhotoView(CreateView):
     def form_valid(self, form):
         photo = form.save(commit=False)
         photo.user = self.request.user
-        photo.save()
         return super().form_valid(form)
 
 
