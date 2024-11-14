@@ -1,5 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
@@ -37,12 +37,15 @@ class PetDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
-class EditPetView(LoginRequiredMixin, UpdateView):
+class EditPetView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Pet
     form_class = PetEditForm
     template_name = 'pets/pet-edit-page.html'
-    context_object_name = 'pet'
     slug_url_kwarg = 'pet_slug'
+
+    def test_func(self):
+        pet = get_object_or_404(Pet, pk=self.kwargs['pet_slug'])
+        return self.request.user == pet.user
 
     def get_success_url(self):
         return reverse_lazy(
@@ -54,34 +57,31 @@ class EditPetView(LoginRequiredMixin, UpdateView):
         )
 
 
-class DeletePetView(LoginRequiredMixin, DeleteView):
+class DeletePetView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Pet
     template_name = 'pets/pet-delete-page.html'
-    context_object_name = 'pet'
-    success_url = reverse_lazy('profile-details', kwargs={'pk': 1})
+    slug_url_kwarg = 'pet_slug'
+    form_class = PetDeleteForm
 
-    def get_object(self, queryset=None):
-        return Pet.objects.get(slug=self.kwargs['pet_slug'])
+    def get_success_url(self):
+        return reverse_lazy(
+            'profile-details',
+            kwargs={
+                'pk': self.request.user.pk,
+            }
+        )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = PetDeleteForm(initial=self.object.__dict__)
-        return context
+    def test_func(self):
+        pet = get_object_or_404(Pet, slug=self.kwargs['pet_slug'])
+        return self.request.user == pet.user
 
-    def delete(self, request, *args, **kwargs):
-        pet = self.get_object()
-        pet.delete()
-        return redirect(self.success_url())
+    def get_initial(self) -> dict:
+        return self.get_object().__dict__
 
-def pet_delete(request, username:str, pet_slug:str):
-    pet = Pet.objects.get(slug=pet_slug)
-    if request.method == 'POST':
-        pet.delete()
-        return redirect('profile-details', pk=1)
-    form = PetDeleteForm(instance=pet)
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'data': self.get_initial(),
+        })
 
-    context = {
-        'form': form,
-        'pet': pet,
-    }
-    return render(request, template_name='pets/pet-delete-page.html', context=context)
+        return kwargs

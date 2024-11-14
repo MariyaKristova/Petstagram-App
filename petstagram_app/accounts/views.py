@@ -27,10 +27,14 @@ class AppUserRegisterView(CreateView):
 
         return response
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name='accounts/profile-edit-page.html'
+
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user
 
     def get_success_url(self):
         return reverse_lazy(
