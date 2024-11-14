@@ -48,9 +48,9 @@ def like_functionality(request, photo_id: int):
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
 
 def share_functionality(request, photo_id: int):
-    copy(request.META['HTTP_HOST'] + resolve_url('photo-details',photo_id))
+    copy(request.META.get('HTTP_HOST') + resolve_url('photo-details',photo_id))
 
-    return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
+    return redirect(request.META.get('HTTP_REFERER') + f'#{photo_id}')
 
 @login_required
 def comment_functionality(request, photo_id):
