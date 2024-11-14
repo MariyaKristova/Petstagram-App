@@ -31,6 +31,7 @@ class PhotoDetailsView(LoginRequiredMixin, DetailView):
         context['comment_form'] = CommentForm
         context['comments'] = self.object.comment_set.all()
         context['likes'] = self.object.like_set.all()
+        self.object.has_liked = self.object.like_set.filter(user=self.request.user).exists()
         return context
 
 
